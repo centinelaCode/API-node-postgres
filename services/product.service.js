@@ -66,8 +66,9 @@ class ProductService {
          throw new Error('Product not found');
       }
 
+      const productDelete = this.products[index];
       this.products.splice(index, 1);
-      return { message: 'Deleted', id }
+      return productDelete;
    }
 }
 
