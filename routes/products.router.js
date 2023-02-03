@@ -4,7 +4,7 @@ const ProductService = require('../services/product.service');
 
 const router = express.Router();
 
-// instaciamos el ProductService
+//TODO Instaciamos el ProductService para tener acceso a sus metodos
 const service = new ProductService();
 
 //? Metodo GET all
@@ -25,10 +25,9 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
    const body = req.body;
 
-   res.status(201).json({
-      message: 'created',
-      data: body
-   })
+   const product = service.create(body);
+
+   res.status(201).json(product)
 })
 
 
@@ -37,34 +36,26 @@ router.patch('/:id', (req, res) => {
    const { id } = req.params;
    const body = req.body;
 
-   res.json({
-      message: 'Update (partial)',
-      data: body,
-      id
-   })
+   const product = service.update(id, body);
+   res.json(product);
 })
 
-//? Metodo PUT
-router.put('/:id', (req, res) => {
-   const { id } = req.params;
-   const body = req.body;
+//? Metodo PUT (usaremos solo patch)
+// router.put('/:id', (req, res) => {
+//    const { id } = req.params;
+//    const body = req.body;
 
-   res.json({
-      message: 'Update',
-      data: body,
-      id
-   })
-})
+//    const product = service.update(id, body);
+//    res.json(product);
+// })
 
 
 //? Metodo DELETE
 router.delete('/:id', (req, res) => {
    const { id } = req.params;
 
-   res.json({
-      message: 'Delete',
-      id
-   })
+   const rta = service.delete(id);
+   res.json(rta);
 })
 
 module.exports = router;
