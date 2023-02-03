@@ -8,22 +8,22 @@ const router = express.Router();
 const service = new ProductService();
 
 //? Metodo GET all
-router.get('/', (req, res) => {
-   const products = service.find();
+router.get('/', async(req, res) => {
+   const products = await service.find();
    res.json(products)
 })
 
 //? Metodo GET one
-router.get('/:id', (req, res) => {
-   const { id } = req.params;
+router.get('/:id', async(req, res) => {
+   const { id } = await req.params;
 
    const product = service.findOne(id);
    res.json(product);
 })
 
 //? Metodo POST
-router.post('/', (req, res) => {
-   const body = req.body;
+router.post('/', async(req, res) => {
+   const body = await req.body;
 
    const product = service.create(body);
    res.status(201).json(product)
@@ -31,12 +31,22 @@ router.post('/', (req, res) => {
 
 
 //? Metodo PATH
-router.patch('/:id', (req, res) => {
-   const { id } = req.params;
-   const body = req.body;
+router.patch('/:id', async(req, res) => {
 
-   const product = service.update(id, body);
-   res.json(product);
+   try {
+      const { id } = req.params;
+      const body = req.body;
+
+      const product = await service.update(id, body);
+      res.json(product);
+   } catch (error) {
+      // el error es el que se especifico en throw new Error('Product not found');
+      res.status(404).json({
+         message: error.message
+      })
+   }
+
+
 })
 
 //? Metodo PUT (usaremos solo patch)
@@ -50,10 +60,10 @@ router.patch('/:id', (req, res) => {
 
 
 //? Metodo DELETE
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async(req, res) => {
    const { id } = req.params;
 
-   const rta = service.delete(id);
+   const rta = await service.delete(id);
    res.json(rta);
 })
 
