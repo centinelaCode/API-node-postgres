@@ -14,11 +14,16 @@ router.get('/', async(req, res) => {
 })
 
 //? Metodo GET one
-router.get('/:id', async(req, res) => {
-   const { id } = await req.params;
+router.get('/:id', (req, res, next) => {
 
-   const product = service.findOne(id);
-   res.json(product);
+   try {
+      const { id } = req.params;
+
+      const product = service.findOne(id);
+      res.json(product);
+   } catch (error) {
+      next(error)
+   }
 })
 
 //? Metodo POST

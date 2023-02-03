@@ -37,12 +37,13 @@ class ProductService {
       return new Promise((resolve, reject) => {
          setTimeout(() => {
             resolve(this.products);
-         }, 5000);
+         }, 2000);
       })
    }
 
    //! Service para encontrar un producto por su ID
-   async findOne(id) {
+   findOne(id) {
+      const name = this.getTotal();
       return this.products.find(item => item.id === id);
    }
 
