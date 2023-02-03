@@ -1,26 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const faker = require('faker');
+const UserService = require('../services/user.service')
+
+// instaciamos el UserService
+const service = new UserService();
 
 router.get('/', (req, res) => {
-   // obtenemos losa query params para el numero de categories
-   const { size } = req.query;
-
-   // creamos una data fake
-   const users = [];
-   const limit = size || 10;
-   for (let index = 0; index < limit; index++) {
-      users.push({
-         firstname: faker.name.firstName(),
-         lastname: faker.name.lastName(),
-         area: faker.name.jobArea(),
-         web: faker.internet.domainName(),
-         email: faker.internet.email(),
-         password: faker.internet.password(64),
-      })
-   }
+   const users = service.find()   ;
    res.json(users)
+})
 
+router.get('/:id', (req, res) => {
+   const { id } = req.params;
+
+   const user = service.findOne(id)   ;
+   res.json(user)
 })
 
 module.exports = router;

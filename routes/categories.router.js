@@ -1,22 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const faker = require('faker');
+
+const CategoryService = require('../services/categories.service');
+
+// instaciamos el ProductService
+const service = new CategoryService();
 
 router.get('/', (req, res) => {
-   // obtenemos losa query params para el numero de categories
-   const { size } = req.query;
-
-   // creamos una data fake
-   const categories = [];
-   const limit = size || 10;
-   for (let index = 0; index < limit; index++) {
-      categories.push({
-         name: faker.commerce.productMaterial(),
-         description: faker.commerce.productDescription(),
-      })
-   }
+   const categories = service.find();
    res.json(categories)
+})
 
+router.get('/:id', (req, res) => {
+   const { id } = req.params;
+
+   const category = service.findOne(id);
+   res.json(category)
 })
 
 module.exports = router;
