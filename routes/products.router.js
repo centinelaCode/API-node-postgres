@@ -36,7 +36,7 @@ router.post('/', async(req, res) => {
 
 
 //? Metodo PATH
-router.patch('/:id', async(req, res) => {
+router.patch('/:id', async(req, res, next) => {
 
    try {
       const { id } = req.params;
@@ -46,9 +46,7 @@ router.patch('/:id', async(req, res) => {
       res.json(product);
    } catch (error) {
       // el error es el que se especifico en throw new Error('Product not found');
-      res.status(404).json({
-         message: error.message
-      })
+      next(error)
    }
 
 

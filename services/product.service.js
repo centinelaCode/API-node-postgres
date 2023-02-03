@@ -1,4 +1,5 @@
 const faker = require('faker');
+const boom = require('@hapi/boom');
 
 class ProductService {
 
@@ -10,13 +11,14 @@ class ProductService {
 
    //! Servicio que permite crear una data de 10 productos con datos fake
    generate() {
-      const limit = 10;
+      const limit = 5;
       for (let index = 0; index < limit; index++) {
          this.products.push({
             id: faker.datatype.uuid(),
             name: faker.commerce.productName(),
             price: parseInt(faker.commerce.price(), 10),
             image: faker.image.imageUrl(),
+            isBlock: faker.datatype.boolean(),
          });
       }
    }
@@ -43,15 +45,23 @@ class ProductService {
 
    //! Service para encontrar un producto por su ID
    findOne(id) {
-      const name = this.getTotal();
-      return this.products.find(item => item.id === id);
+      const product =  this.products.find(item => item.id === id);
+      if(!product){
+         throw boom.notFound('Product not found');
+      }
+
+      if(product.isBlock) {
+         throw boom.conflict('Product is block')  // genera err code 409
+      }
+
+      return product;
    }
 
    //! Service para actualizar un producto, desde un dato hasta todos
    async update(id, changes){
       const index = this.products.findIndex(item => item.id === id);
       if(index === -1) {
-         throw new Error('Product not found');
+         throw boom.notFound('Product not found');
       }
 
       // el update permite cambiar desde una sola propiedad hasta todas las propiedades
@@ -68,7 +78,7 @@ class ProductService {
    async delete(id){
       const index = this.products.findIndex(item => item.id === id);
       if(index === -1) {
-         throw new Error('Product not found');
+         throw boom.notFound('Product not found');
       }
 
       const productDelete = this.products[index];
