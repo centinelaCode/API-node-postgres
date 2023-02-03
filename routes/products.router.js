@@ -1,6 +1,11 @@
 
 const express = require('express');
 const ProductService = require('../services/product.service');
+const validatorHandler = require('../middleweres/validator.handler');
+const {
+   createProductShema,
+   updateProductShema,
+   getProductShema } = require('../schemas/product.schema');
 
 const router = express.Router();
 
@@ -14,42 +19,45 @@ router.get('/', async(req, res) => {
 })
 
 //? Metodo GET one
-router.get('/:id', (req, res, next) => {
+router.get('/:id',
+   validatorHandler(getProductShema, 'params'),
+   (req, res, next) => {
+      try {
+         const { id } = req.params;
 
-   try {
-      const { id } = req.params;
-
-      const product = service.findOne(id);
-      res.json(product);
-   } catch (error) {
-      next(error)
+         const product = service.findOne(id);
+         res.json(product);
+      } catch (error) {
+         next(error)
    }
 })
 
 //? Metodo POST
-router.post('/', async(req, res) => {
-   const body = await req.body;
+router.post('/',
+   validatorHandler(createProductShema, 'body'),
+   async(req, res) => {
+      const body = await req.body;
 
-   const product = service.create(body);
-   res.status(201).json(product)
+      const product = service.create(body);
+      res.status(201).json(product)
 })
 
 
 //? Metodo PATH
-router.patch('/:id', async(req, res, next) => {
+router.patch('/:id',
+   validatorHandler(getProductShema, 'params'),
+   validatorHandler(updateProductShema, 'body'),
+   async(req, res, next) => {
+      try {
+         const { id } = req.params;
+         const body = req.body;
 
-   try {
-      const { id } = req.params;
-      const body = req.body;
-
-      const product = await service.update(id, body);
-      res.json(product);
-   } catch (error) {
-      // el error es el que se especifico en throw new Error('Product not found');
-      next(error)
-   }
-
-
+         const product = await service.update(id, body);
+         res.json(product);
+      } catch (error) {
+         // el error es el que se especifico en throw new Error('Product not found');
+         next(error)
+      }
 })
 
 //? Metodo PUT (usaremos solo patch)
