@@ -68,6 +68,7 @@ class ProductService {
 
       const productDelete = this.products[index];
       this.products.splice(index, 1);
+
       return productDelete;
    }
 }

@@ -26,7 +26,6 @@ router.post('/', (req, res) => {
    const body = req.body;
 
    const product = service.create(body);
-
    res.status(201).json(product)
 })
 
