@@ -14,7 +14,7 @@ const whitelist = ['http://localhost:8080', 'https://myapp.com'];
 const optionsCors = {
    origin: (origin, callback) => {
       // si el origen esta en la whitelist lo dejo pasar
-      if(whitelist.includes(origin)) {
+      if(whitelist.includes(origin) || !origin) {
          callback(null, true)
       } else {
          callback(new Error('No Permitido'));
