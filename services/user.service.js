@@ -1,4 +1,5 @@
 const faker = require('faker');
+const getConnection = require('../libs/postgres');
 
 
 class UserService {
@@ -37,8 +38,13 @@ class UserService {
    }
 
    //! Service para encontrar todos los users
-   find(){
-      return this.users;
+   async find(){
+      const client = await getConnection();
+      const rta = await client.query('SELECT * FROM taks');
+      return rta.rows;
+
+
+      // return this.users;
    }
 
    //! Service para encontrar un user por su ID

@@ -6,8 +6,8 @@ const UserService = require('../services/user.service')
 const service = new UserService();
 
 //? Metodo GET all
-router.get('/', (req, res) => {
-   const users = service.find()   ;
+router.get('/', async (req, res) => {
+   const users = await service.find()   ;
    res.json(users)
 })
 

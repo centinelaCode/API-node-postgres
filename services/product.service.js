@@ -1,12 +1,17 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 
+const pool = require('../libs/postgresPool');
+
 class ProductService {
 
    //! Constructor del service
    constructor() {
       this.products = [];
       this.generate();
+
+      this.pool = pool;
+      this.pool.on('error', (err) => console.error(err))
    }
 
    //! Servicio que permite crear una data de 10 productos con datos fake
@@ -35,12 +40,17 @@ class ProductService {
    }
 
    //! Service para encontrar todos los productos
-   find(){
-      return new Promise((resolve, reject) => {
-         setTimeout(() => {
-            resolve(this.products);
-         }, 2000);
-      })
+   async find(){
+
+      const query = 'SELECT *  FROM taks';
+      const rta = await this.pool.query(query);
+      return rta.rows;
+
+      // return new Promise((resolve, reject) => {
+      //    setTimeout(() => {
+      //       resolve(this.products);
+      //    }, 2000);
+      // })
    }
 
    //! Service para encontrar un producto por su ID
