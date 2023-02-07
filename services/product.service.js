@@ -42,7 +42,7 @@ class ProductService {
    //! Service para encontrar todos los productos
    async find(){
 
-      const query = 'SELECT *  FROM taks';
+      const query = 'SELECT * FROM task';
       const rta = await this.pool.query(query);
       return rta.rows;
 
