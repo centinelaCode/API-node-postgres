@@ -2,6 +2,7 @@
 const express = require('express');
 const ProductService = require('../services/product.service');
 const validatorHandler = require('../middleweres/validator.handler');
+// const sequelizeErrorHandler = require('../middleweres/error.handler')
 const {
    createProductShema,
    updateProductShema,

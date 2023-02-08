@@ -19,5 +19,16 @@ function boomErrorHandler (err, req, res, next) {
    next(err);
 }
 
+function sequelizeErrorHandler (err, req, res, next) {
+   if(err.parent) {
+      res.status(500).json({
+         name: err.name,
+         message: err.errors[0].message,
+         detail: err.parent.detail
+      });
+   }
+   next(err);
+}
 
-module.exports = { logErrors, errorHandler, boomErrorHandler }
+
+module.exports = { logErrors, errorHandler, boomErrorHandler, sequelizeErrorHandler }
