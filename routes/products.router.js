@@ -13,19 +13,23 @@ const router = express.Router();
 const service = new ProductService();
 
 //? Metodo GET all
-router.get('/', async(req, res) => {
-   const products = await service.find();
-   res.json(products)
+router.get('/', async(req, res, next) => {
+   try {
+      const products = await service.find();
+      res.json(products)
+   } catch (error) {
+      next(error)
+   }
 })
 
 //? Metodo GET one
 router.get('/:id',
    validatorHandler(getProductShema, 'params'),
-   (req, res, next) => {
+   async (req, res, next) => {
       try {
          const { id } = req.params;
 
-         const product = service.findOne(id);
+         const product = await service.findOne(id);
          res.json(product);
       } catch (error) {
          next(error)
@@ -35,11 +39,15 @@ router.get('/:id',
 //? Metodo POST
 router.post('/',
    validatorHandler(createProductShema, 'body'),
-   async(req, res) => {
-      const body = await req.body;
+   async(req, res, next) => {
+      try {
+         const body = await req.body;
 
-      const product = service.create(body);
-      res.status(201).json(product)
+         const newProduct = await service.create(body);
+         res.status(201).json(newProduct)
+      } catch (error) {
+         next(error);
+      }
 })
 
 
@@ -60,22 +68,17 @@ router.patch('/:id',
       }
 })
 
-//? Metodo PUT (usaremos solo patch)
-// router.put('/:id', (req, res) => {
-//    const { id } = req.params;
-//    const body = req.body;
-
-//    const product = service.update(id, body);
-//    res.json(product);
-// })
-
 
 //? Metodo DELETE
-router.delete('/:id', async(req, res) => {
-   const { id } = req.params;
+router.delete('/:id', async(req, res, next) => {
+   try {
+      const { id } = req.params;
 
-   const rta = await service.delete(id);
-   res.json(rta);
+      await service.delete(id);
+      res.json({id});
+   } catch (error) {
+      next(error);
+   }
 })
 
 module.exports = router;
