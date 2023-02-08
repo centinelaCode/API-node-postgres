@@ -1,7 +1,8 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 
-const sequelize = require('../libs/sequelize');
+// const sequelize = require('../libs/sequelize');
+const { models } = require('../libs/sequelize')
 
 class ProductService {
 
@@ -42,17 +43,16 @@ class ProductService {
 
    //! Service para encontrar todos los productos
    async find(){
+      //! con sequelize with model
+      const rta = await models.Product.findAll();
+      return rta;
 
-      const query = 'SELECT * FROM task';
-      // const [data, metadata] = await sequelize.query(query);
-      const [data] = await sequelize.query(query);
-      return data;
 
-      // return new Promise((resolve, reject) => {
-      //    setTimeout(() => {
-      //       resolve(this.products);
-      //    }, 2000);
-      // })
+      //! con query
+      // const query = 'SELECT * FROM task';
+      // // const [data, metadata] = await sequelize.query(query);
+      // const [data] = await sequelize.query(query);
+      // return data;
    }
 
    //! Service para encontrar un producto por su ID
