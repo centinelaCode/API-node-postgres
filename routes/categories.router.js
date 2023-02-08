@@ -7,8 +7,8 @@ const CategoryService = require('../services/categories.service');
 const service = new CategoryService();
 
 //? Metodo GET all
-router.get('/', (req, res) => {
-   const categories = service.find();
+router.get('/', async(req, res) => {
+   const categories = await service.find();
    res.json(categories)
 })
 

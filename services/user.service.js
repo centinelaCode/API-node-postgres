@@ -8,25 +8,25 @@ class UserService {
 
    //! Constructor del service
    constructor() {
-      this.users = [];
-      this.generate();
+      // this.users = [];
+      // this.generate();
    }
 
    //! Servicio que permite crear una data de 10 users con datos fake
-   generate() {
-      const limit = 3;
-      for (let index = 0; index < limit; index++) {
-         this.users.push({
-            id: faker.datatype.uuid(),
-            firstname: faker.name.firstName(),
-            lastname: faker.name.lastName(),
-            area: faker.name.jobArea(),
-            web: faker.internet.domainName(),
-            email: faker.internet.email(),
-            password: faker.internet.password(64),
-         })
-      }
-   }
+   // generate() {
+   //    const limit = 3;
+   //    for (let index = 0; index < limit; index++) {
+   //       this.users.push({
+   //          id: faker.datatype.uuid(),
+   //          firstname: faker.name.firstName(),
+   //          lastname: faker.name.lastName(),
+   //          area: faker.name.jobArea(),
+   //          web: faker.internet.domainName(),
+   //          email: faker.internet.email(),
+   //          password: faker.internet.password(64),
+   //       })
+   //    }
+   // }
 
    //! Service para crera un nuevo user
    create(data){
@@ -41,15 +41,15 @@ class UserService {
 
    //! Service para encontrar todos los users
    async find(){
-      //! Usando los metodos de sequelize
-      const rta = await models.User.findAll();
-      return rta;
-
-
       //! Ejecutando el query
       // const client = await getConnection();
       // const rta = await client.query('SELECT * FROM task');
       // return rta.rows;
+
+      //! Usando los metodos de sequelize
+      const rta = await models.User.findAll();
+      return rta;
+
 
    }
 

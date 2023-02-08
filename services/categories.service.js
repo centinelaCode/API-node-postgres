@@ -1,24 +1,26 @@
 const faker = require('faker');
 
+const { models } = require('../libs/sequelize')
+
 class CategoryService {
 
    //! Constructor del service
    constructor() {
-      this.categories = [];
-      this.generate();
+      // this.categories = [];
+      // this.generate();
    }
 
    //! Servicio que permite crear una data de 10 categories con datos fake
-   generate() {
-      const limit = 3;
-      for (let index = 0; index < limit; index++) {
-         this.categories.push({
-            id: faker.datatype.uuid(),
-            name: faker.commerce.productMaterial(),
-            description: faker.commerce.productDescription(),
-         })
-      }
-   }
+   // generate() {
+   //    const limit = 3;
+   //    for (let index = 0; index < limit; index++) {
+   //       this.categories.push({
+   //          id: faker.datatype.uuid(),
+   //          name: faker.commerce.productMaterial(),
+   //          description: faker.commerce.productDescription(),
+   //       })
+   //    }
+   // }
 
    //! Service para crera una nueva categorie
    create(data){
@@ -32,8 +34,9 @@ class CategoryService {
    }
 
    //! Service para encontrar todas las categories
-   find(){
-      return this.categories;
+   async find(){
+      const rta = await models.Category.findAll();
+      return rta;
    }
 
    //! Service para encontrar una categorie por su ID
