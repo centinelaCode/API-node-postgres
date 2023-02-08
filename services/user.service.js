@@ -1,5 +1,7 @@
 const faker = require('faker');
-const getConnection = require('../libs/postgres');
+
+// const getConnection = require('../libs/postgres');
+const { models } = require('../libs/sequelize')
 
 
 class UserService {
@@ -39,12 +41,16 @@ class UserService {
 
    //! Service para encontrar todos los users
    async find(){
-      const client = await getConnection();
-      const rta = await client.query('SELECT * FROM task');
-      return rta.rows;
+      //! Usando los metodos de sequelize
+      const rta = await models.User.findAll();
+      return rta;
 
 
-      // return this.users;
+      //! Ejecutando el query
+      // const client = await getConnection();
+      // const rta = await client.query('SELECT * FROM task');
+      // return rta.rows;
+
    }
 
    //! Service para encontrar un user por su ID
