@@ -1,4 +1,3 @@
-
 const express = require('express');
 const ProductService = require('../services/product.service');
 const validatorHandler = require('../middleweres/validator.handler');
