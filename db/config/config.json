@@ -1,0 +1,10 @@
+{
+   "development": {
+      "url": "postgresql://cbx:123456@localhost:5432/my_store",
+      "dialect": "postgres"
+   },
+   "production": {
+      "url": "postgresql://cbx:123456@localhost:5432/my_store",
+      "dialect": "postgres"
+   }
+}
