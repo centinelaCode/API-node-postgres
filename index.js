@@ -3,7 +3,12 @@ const express = require('express');
 const cors = require('cors');
 
 const routerApi = require('./routes');
-const { logErrors,errorHandler, boomErrorHandler, sequelizeErrorHandler } = require('./middleweres/error.handler')
+const {
+   logErrors,errorHandler,
+   boomErrorHandler,
+   // sequelizeErrorHandler,
+   ormErrorHandler,
+} = require('./middleweres/error.handler')
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,7 +34,8 @@ routerApi(app);
 
 // middleware error
 app.use(logErrors);
-app.use(sequelizeErrorHandler);
+// app.use(sequelizeErrorHandler);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
