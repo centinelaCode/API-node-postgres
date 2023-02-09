@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes, Model, Sequelize } = require('sequelize');
 
 const PRODUCT_TABLE = 'products';
 
@@ -21,6 +21,12 @@ const ProductSchema = {
    image: {
       allowNull: true,
       type: DataTypes.STRING,
+   },
+   createAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      field: 'create_at',
+      defaultValue: Sequelize.NOW
    }
 }
 
@@ -34,7 +40,7 @@ class Product extends Model {
          sequelize,
          tableName: PRODUCT_TABLE,
          modelName: 'Product',
-         timestamp: true,
+         timestamps: false,
       }
    }
 }

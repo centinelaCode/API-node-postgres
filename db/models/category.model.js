@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes, Model, Sequelize } = require('sequelize');
 
 const CATEGORY_TABLE = 'categorys';
 
@@ -17,6 +17,12 @@ const CategorySchema = {
    disponible: {
       type: DataTypes.INTEGER,
       defaultValue: 1
+   },
+   createAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      field: 'create_at',
+      defaultValue: Sequelize.NOW
    }
 }
 
@@ -30,7 +36,7 @@ class Category extends Model {
          sequelize,
          tableName: CATEGORY_TABLE,
          modelName: 'Category',
-         timestamp: true,
+         timestamps: false,
       }
    }
 }
