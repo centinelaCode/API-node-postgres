@@ -3,6 +3,7 @@ const express = require('express');
 const productsRouter = require('./products.router')
 const categoriesRouter = require('./categories.router')
 const usersRouter = require('./users.router')
+const customersRouter = require('./customer.router');
 
 //TODO registramos en express cada modulo de routes - con path base
 function routerApi(app) {
@@ -11,6 +12,7 @@ function routerApi(app) {
    router.use('/products', productsRouter);
    router.use('/categories', categoriesRouter);
    router.use('/users', usersRouter);
+   router.use('/customers', customersRouter);
 
    //TODO sin path base (solo agregamos el /api/v1/ )
    // app.use('/api/v1/products', productsRouter);

@@ -19,14 +19,20 @@ class UserService {
 
    //! Service para encontrar todos los users
    async find(){
-      const rta = await models.User.findAll();
+      const rta = await models.User.findAll({
+         include: ['customer']
+      });
       return rta;
    }
 
 
    //! Service para encontrar un user por su ID
    async findOne(id) {
-      const user = await models.User.findByPk(id);
+      // const user = await models.User.findByPk(id);
+      const user = await models.User.findAll({
+         where: { id: id },
+         include: ['customer']
+      })
       if(!user) {
          throw boom.notFound('User not found')
          // return {message: 'El producto especificado no existe'}
