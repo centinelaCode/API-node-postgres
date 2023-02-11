@@ -3,9 +3,9 @@ const ProductService = require('../services/product.service');
 const validatorHandler = require('../middleweres/validator.handler');
 // const sequelizeErrorHandler = require('../middleweres/error.handler')
 const {
-   createProductShema,
-   updateProductShema,
-   getProductShema } = require('../schemas/product.schema');
+   createProductSchema,
+   updateProductSchema,
+   getProductSchema } = require('../schemas/product.schema');
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.get('/', async(req, res, next) => {
 
 //? Metodo GET one
 router.get('/:id',
-   validatorHandler(getProductShema, 'params'),
+   validatorHandler(getProductSchema, 'params'),
    async (req, res, next) => {
       try {
          const { id } = req.params;
@@ -38,7 +38,7 @@ router.get('/:id',
 
 //? Metodo POST
 router.post('/',
-   validatorHandler(createProductShema, 'body'),
+   validatorHandler(createProductSchema, 'body'),
    async(req, res, next) => {
       try {
          const body = await req.body;
@@ -53,8 +53,8 @@ router.post('/',
 
 //? Metodo PATH
 router.patch('/:id',
-   validatorHandler(getProductShema, 'params'),
-   validatorHandler(updateProductShema, 'body'),
+   validatorHandler(getProductSchema, 'params'),
+   validatorHandler(updateProductSchema, 'body'),
    async(req, res, next) => {
       try {
          const { id } = req.params;
