@@ -14,13 +14,16 @@ class CategoryService {
 
    //! Service para encontrar todas las categories
    async find(){
-      const rta = await models.Category.findAll();
-      return rta;
+      const categories = await models.Category.findAll();
+      return categories;
    }
 
    //! Service para encontrar una categorie por su ID
    async findOne(id) {
-      const category = await models.Category.findByPk(id);
+      const category = await models.Category.findAll({
+         where: { id: id },
+         include: ['products']
+      });
       if(!category){
          throw boom.notFound('Product not found')
       }

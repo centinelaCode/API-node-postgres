@@ -32,8 +32,10 @@ class ProductService {
    //! Service para encontrar todos los productos
    async find(){
       //! con sequelize with model
-      const rta = await models.Product.findAll();
-      return rta;
+      const products = await models.Product.findAll({
+         include: ['category']
+      });
+      return products;
 
 
       //! con query
@@ -45,7 +47,10 @@ class ProductService {
 
    //! Service para encontrar un producto por su ID
    async findOne(id) {
-      const product = await models.Product.findByPk(id);
+      const product = await models.Product.findAll({
+         where:{ id: id },
+         include: ['category']
+      });
       if(!product) {
          throw boom.notFound('Product not found')
          // return {message: 'El producto especificado no existe'}
