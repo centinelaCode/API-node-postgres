@@ -1,36 +1,15 @@
-const faker = require('faker');
-
 const { models } = require('../libs/sequelize')
+const boom = require('@hapi/boom');
 
 class CategoryService {
 
    //! Constructor del service
-   constructor() {
-      // this.categories = [];
-      // this.generate();
-   }
-
-   //! Servicio que permite crear una data de 10 categories con datos fake
-   // generate() {
-   //    const limit = 3;
-   //    for (let index = 0; index < limit; index++) {
-   //       this.categories.push({
-   //          id: faker.datatype.uuid(),
-   //          name: faker.commerce.productMaterial(),
-   //          description: faker.commerce.productDescription(),
-   //       })
-   //    }
-   // }
+   constructor() {}
 
    //! Service para crera una nueva categorie
-   create(data){
-      const newCategorie = {
-         id: faker.datatype.uuid(),
-         ...data
-      }
-
-      this.categories.push(newCategorie);
-      return (newCategorie);
+   async create(data){
+      const newCategory = await models.Category.create(data);
+      return newCategory;
    }
 
    //! Service para encontrar todas las categories
@@ -40,39 +19,28 @@ class CategoryService {
    }
 
    //! Service para encontrar una categorie por su ID
-   findOne(id) {
-      return this.categories.find(item => item.id === id);
+   async findOne(id) {
+      const category = await models.Category.findByPk(id);
+      if(!category){
+         throw boom.notFound('Product not found')
+      }
+
+      return category;
    }
 
    //! Service para actualizar una categorie, desde un dato hasta todos
-   update(id, changes){
-      const index = this.categories.findIndex(item => item.id === id);
-      if(index === -1) {
-         throw new Error('Categorie not found');
-      }
-
-      const categorie = this.categories[index];
-      this.categories[index] = {
-         ...categorie,
-         ...changes
-      }
-
-      return this.categories[index];
+   async update(id, changes){
+      const category = await this.findOne(id);
+      const rta = await category.update(changes);
+      return rta;
    }
 
    //! Service para eliminar una categorie (eliminación fisica)
-   delete(id){
-      const index = this.categories.findIndex(item => item.id === id);
-      if(index === -1) {
-         throw new Error('Categorie not found');
-      }
-
-      const categorieDelete = this.categories[index]
-      this.categories.splice(index, 1);
-      return categorieDelete;
+   async delete(id){
+     const category = await this.findOne(id);
+     await category.destroy();
+     return { id };
    }
-
 }
-
 
 module.exports = CategoryService;
