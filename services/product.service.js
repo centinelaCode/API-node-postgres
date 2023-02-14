@@ -30,11 +30,19 @@ class ProductService {
    }
 
    //! Service para encontrar todos los productos
-   async find(){
+   async find(limit, offset){
       //! con sequelize with model
-      const products = await models.Product.findAll({
-         include: ['category']
-      });
+      const options = {
+         include: ['category'],
+      }
+
+      // Si se mandan limit y offset se agregan a las options para hacer paginacion
+      if(limit && offset) {
+         options.limit = limit;
+         options.offset = offset;
+      }
+
+      const products = await models.Product.findAll(options);
       return products;
 
 

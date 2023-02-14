@@ -5,7 +5,8 @@ const validatorHandler = require('../middleweres/validator.handler');
 const {
    createProductSchema,
    updateProductSchema,
-   getProductSchema } = require('../schemas/product.schema');
+   getProductSchema,
+   queryProductSchema } = require('../schemas/product.schema');
 
 const router = express.Router();
 
@@ -13,9 +14,12 @@ const router = express.Router();
 const service = new ProductService();
 
 //? Metodo GET all
-router.get('/', async(req, res, next) => {
+router.get('/',
+   validatorHandler(queryProductSchema, 'query'),
+   async(req, res, next) => {
    try {
-      const products = await service.find();
+      const { limit, offset } = req.query;
+      const products = await service.find(limit, offset);
       res.json(products)
    } catch (error) {
       next(error)
