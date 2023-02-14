@@ -17,6 +17,13 @@ class OrderService {
    }
 
 
+   //! Service para agregar un item (order-product)
+   async addItem(data){
+      const newItem = await models.OrderProduct.create(data);
+      return newItem;
+   }
+
+
    //! Service para encontrar todos los productos
    async find(){
       //! con sequelize with model
@@ -36,7 +43,8 @@ class OrderService {
             {
                association: 'customer',
                include: ['user']
-            }
+            },
+            'items'
          ]
 
       });

@@ -4,7 +4,8 @@ const validatorHandler = require('../middleweres/validator.handler');
 // const sequelizeErrorHandler = require('../middleweres/error.handler')
 const {
    createOrderSchema,
-   getOrderSchema
+   getOrderSchema,
+   addItemSchema,
 } = require('../schemas/order.schema');
 
 const router = express.Router();
@@ -36,7 +37,7 @@ router.get('/:id',
    }
 })
 
-//? Metodo POST
+//? Metodo POST crear una order
 router.post('/',
    validatorHandler(createOrderSchema, 'body'),
    async(req, res, next) => {
@@ -45,6 +46,20 @@ router.post('/',
 
          const newOrder = await service.create(body);
          res.status(201).json(newOrder)
+      } catch (error) {
+         next(error);
+      }
+})
+
+//? Metodo POST crear un item
+router.post('/add-item',
+   validatorHandler(addItemSchema, 'body'),
+   async(req, res, next) => {
+      try {
+         const body = await req.body;
+
+         const newItem = await service.addItem(body);
+         res.status(201).json(newItem)
       } catch (error) {
          next(error);
       }
