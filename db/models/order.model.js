@@ -34,6 +34,14 @@ class Order extends Model {
    static associate(models) {
       this.belongsTo(models.Customer, {
          as: 'customer',
+      });
+      // relacion muchos a muchos(una order tiene muchos productos y muchos
+      // productos puede estar en una order)
+      this.belongsToMany(models.Product, {
+         as: 'items',  // nombre de la asociacion
+         through: models.OrderProduct, // se especifica la tabal pivote de la relacion n a n
+         foreignKey: 'orderId', // se especifica la llave foranea
+         otherKey: 'productId'  // se especifica la otra llave foranea de la taba pivote
       })
    }
 
