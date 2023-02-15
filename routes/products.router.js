@@ -18,8 +18,8 @@ router.get('/',
    validatorHandler(queryProductSchema, 'query'),
    async(req, res, next) => {
    try {
-      const { limit, offset } = req.query;
-      const products = await service.find(limit, offset);
+      const { limit, offset, priceMax, priceMin } = req.query;
+      const products = await service.find(limit, offset, priceMin, priceMax);
       res.json(products)
    } catch (error) {
       next(error)

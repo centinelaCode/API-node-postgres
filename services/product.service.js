@@ -1,5 +1,6 @@
 // const faker = require('faker');
 const boom = require('@hapi/boom');
+const { Op } = require('sequelize');
 
 // const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize')
@@ -30,10 +31,15 @@ class ProductService {
    }
 
    //! Service para encontrar todos los productos
-   async find(limit, offset){
+   async find(limit, offset, priceMin = 0, priceMax = 10000000){
       //! con sequelize with model
       const options = {
          include: ['category'],
+         where: {
+            price: {
+               [Op.between]: [priceMin, priceMax]
+            }
+         }
       }
 
       // Si se mandan limit y offset se agregan a las options para hacer paginacion
@@ -44,13 +50,6 @@ class ProductService {
 
       const products = await models.Product.findAll(options);
       return products;
-
-
-      //! con query
-      // const query = 'SELECT * FROM task';
-      // // const [data, metadata] = await sequelize.query(query);
-      // const [data] = await sequelize.query(query);
-      // return data;
    }
 
    //! Service para encontrar un producto por su ID
@@ -68,12 +67,6 @@ class ProductService {
 
    //! Service para actualizar un producto, desde un dato hasta todos
    async update(id, changes){
-      // const product = await models.Product.findByPk(id);
-      // if(!product) {
-         //    // return {message: 'El producto especificado no existe'}
-         //    throw boom.notFound('Porduct not found')
-         // }
-
       // verica si existe, si existe lo actualiza si no puede actualizarlo, envia el error
       const product = await this.findOne(id);
       const rta = await product.update(changes);
@@ -82,12 +75,6 @@ class ProductService {
 
    //! Service para eliminar un producto (eliminación fisica)
    async delete(id){
-      // const product = await models.Product.findByPk(id);
-      // if(!product) {
-         //    // return {message: 'El producto especificado no existe'}
-         //    throw boom.notFound('Porduct not found')
-         // }
-
       // verica si existe, si existe lo elimina si no, envia el error
       const product = await this.findOne(id);
       await product.destroy();
